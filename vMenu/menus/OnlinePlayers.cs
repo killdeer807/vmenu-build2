@@ -39,11 +39,18 @@ namespace vMenuClient.menus
             }
         }
 
-        private static string GetDisplayName(IPlayer player)
+        public static string GetDisplayName(IPlayer player)
         {
             return DiscordNicknames.TryGetValue(player.ServerId, out var nickname) && !string.IsNullOrWhiteSpace(nickname)
                 ? GetSafePlayerName(nickname)
                 : GetSafePlayerName(player.Name);
+        }
+
+        public static string GetDisplayName(int serverId, string fallbackName)
+        {
+            return DiscordNicknames.TryGetValue(serverId, out var nickname) && !string.IsNullOrWhiteSpace(nickname)
+                ? GetSafePlayerName(nickname)
+                : GetSafePlayerName(fallbackName);
         }
 
         public List<int> PlayersWaypointList = new();
