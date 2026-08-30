@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,7 +52,7 @@ namespace vMenuClient
             EventHandlers.Add("playerSpawned", new Action(SetAppearanceOnFirstSpawn));
             EventHandlers.Add("vMenu:PrivateMessage", new Action<string, string>(PrivateMessage));
             EventHandlers.Add("vMenu:UpdateTeleportLocations", new Action<string>(UpdateTeleportLocations));
-            EventHandlers.Add("vMenu:SetDiscordNickname", new Action<int, string>(OnlinePlayers.SetDiscordNickname));
+            EventHandlers.Add("vMenu:SetDiscordNickname", new Action<string, string>(OnlinePlayers.SetDiscordNickname));
             TriggerServerEvent("vMenu:RequestDiscordNicknames");
 
             if (GetSettingsBool(Setting.vmenu_enable_weather_sync))
