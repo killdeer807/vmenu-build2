@@ -19,15 +19,23 @@ namespace vMenuClient.menus
     {
         private static readonly Dictionary<int, string> DiscordNicknames = new();
 
-        public static void SetDiscordNickname(int serverId, string nickname)
+        public static void SetDiscordNickname(string serverIdString, string nickname)
         {
+            if (!int.TryParse(serverIdString, out var serverId))
+            {
+                Debug.WriteLine($"[vMenu Discord Names] Invalid server id from nickname event: {serverIdString}");
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(nickname))
             {
                 DiscordNicknames.Remove(serverId);
+                Debug.WriteLine($"[vMenu Discord Names] Client cleared nickname for Server #{serverId}");
             }
             else
             {
                 DiscordNicknames[serverId] = nickname;
+                Debug.WriteLine($"[vMenu Discord Names] Client received Server #{serverId} -> {nickname}");
             }
         }
 
@@ -345,6 +353,11 @@ namespace vMenuClient.menus
         /// </summary>
         public async Task UpdatePlayerlist()
         {
+            // Request the latest Discord display-name cache every time this menu is opened/refreshed.
+            // This avoids a race where the initial nickname event arrives before/after the menu is created.
+            TriggerServerEvent("vMenu:RequestDiscordNicknames");
+            await Delay(150);
+
             void UpdateStuff()
             {
                 menu.ClearMenuItems();
