@@ -925,7 +925,7 @@ namespace vMenuServer
                 return;
             }
 
-            targetPlayer.TriggerEvent("vMenu:KillMe", source.Name);
+            targetPlayer.TriggerEvent("vMenu:KillMe", source.Name, source.Handle);
         }
 
         /// <summary>
