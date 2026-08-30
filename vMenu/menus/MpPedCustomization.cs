@@ -961,6 +961,8 @@ namespace vMenuClient.menus
             {
                 Label = "→→→"
             };
+            var useEupCode = new MenuItem("Use EUP Code", "Load an existing EUP code onto your current MP character.");
+            var createEupCode = new MenuItem("Create EUP Code", "Create an EUP code from your current MP character clothing so it can be reused or shared.");
 
             MenuController.AddMenu(createCharacterMenu);
             MenuController.AddMenu(savedCharactersMenu);
@@ -980,6 +982,8 @@ namespace vMenuClient.menus
             MenuController.BindMenuItem(menu, createCharacterMenu, createFemaleBtn);
             menu.AddMenuItem(savedCharacters);
             MenuController.BindMenuItem(menu, savedCharactersMenu, savedCharacters);
+            menu.AddMenuItem(useEupCode);
+            menu.AddMenuItem(createEupCode);
 
             menu.RefreshIndex();
 
@@ -2299,6 +2303,15 @@ namespace vMenuClient.menus
                     DefaultPlayerColors();
 
                     MakeCreateCharacterMenu(male: false);
+                }
+                else if (item == useEupCode)
+                {
+                    TriggerEvent("SBJ:UseEUPCode");
+                }
+                else if (item == createEupCode)
+                {
+                    // This is the exact client event registered by the original cl_eupCode.lua.
+                    TriggerEvent("SBJ:c_CreateEUPNumber");
                 }
                 else if (item == savedCharacters)
                 {
