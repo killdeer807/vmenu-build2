@@ -71,6 +71,8 @@ namespace vMenuClient.menus
             var saveCurrentPed = new MenuItem("Save Ped", "Save your current ped. Note for the MP Male/Female peds this won't save most of their customization, just because that's impossible. Create those characters in the MP Character creator instead.");
             var savedPedsBtn = new MenuItem("Saved Peds", "Edit, rename, clone, spawn or delete saved peds.") { Label = "→→→" };
             var spawnPedsBtn = new MenuItem("Spawn Peds", "Change ped model by selecting one from the list or by selecting an addon ped from the list.") { Label = "→→→" };
+            var useEupCode = new MenuItem("Use EUP Code", "Use this to create a character from an EUP code.");
+            var createEupCode = new MenuItem("Create EUP Code", "Create an EUP code so you can easily share your current clothing with others. ~r~This DOES NOT Transfer Hair, and Facial Features.");
 
 
             var spawnByNameBtn = new MenuItem("Spawn By Name", "Spawn a ped by entering it's name manually.");
@@ -94,6 +96,8 @@ namespace vMenuClient.menus
             menu.AddMenuItem(saveCurrentPed);
             menu.AddMenuItem(savedPedsBtn);
             menu.AddMenuItem(spawnPedsBtn);
+            menu.AddMenuItem(useEupCode);
+            menu.AddMenuItem(createEupCode);
 
             menu.AddMenuItem(walkingStyle);
             menu.AddMenuItem(clothingGlowType);
@@ -563,6 +567,14 @@ namespace vMenuClient.menus
                     {
                         Notify.Error("Could not save your current ped, does that save name already exist?");
                     }
+                }
+                else if (item == useEupCode)
+                {
+                    TriggerEvent("SBJ:UseEUPCode");
+                }
+                else if (item == createEupCode)
+                {
+                    TriggerEvent("SBJ:CreateEUPNumber");
                 }
             };
 
