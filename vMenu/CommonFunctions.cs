@@ -1887,24 +1887,33 @@ namespace vMenuClient
         /// <returns></returns>
         public static async Task<string> GetUserInput(string windowTitle, string defaultText, int maxInputLength)
         {
-            // Create the window title string.
+            // The original Project 912/custom vMenu used ox_lib for text input.
+            // Besides looking cleaner, this restores normal Windows clipboard support
+            // (Ctrl+V) for vehicle models, ped names, hex values, save names, etc.
+            if (GetResourceState("ox_lib") == "started")
+            {
+                var completion = new TaskCompletionSource<string>();
+                Action<string> callback = result => completion.TrySetResult(result);
+
+                TriggerEvent("vMenu:GetUserInput", windowTitle ?? "Enter", defaultText ?? "", maxInputLength, callback);
+                return await completion.Task;
+            }
+
+            // Safe fallback to the stock GTA keyboard if ox_lib is unavailable.
             var spacer = "\t";
             AddTextEntry($"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", $"{windowTitle ?? "Enter"}:{spacer}(MAX {maxInputLength} Characters)");
-
-            // Display the input box.
             DisplayOnscreenKeyboard(1, $"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", "", defaultText ?? "", "", "", "", maxInputLength);
             await Delay(0);
-            // Wait for a result.
+
             while (true)
             {
                 var keyboardStatus = UpdateOnscreenKeyboard();
-
                 switch (keyboardStatus)
                 {
-                    case 3: // not displaying input field anymore somehow
-                    case 2: // cancelled
+                    case 3:
+                    case 2:
                         return null;
-                    case 1: // finished editing
+                    case 1:
                         return GetOnscreenKeyboardResult();
                     default:
                         await Delay(0);
