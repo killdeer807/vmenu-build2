@@ -123,10 +123,8 @@ namespace vMenuClient
                     Tick += VehicleHighbeamFlashTick;
                 }
             }
-            if (IsAllowed(Permission.VCMenu))
-            {
-                Tick += VoiceChat;
-            }
+            // Voice Chat handling intentionally disabled for this server build.
+            // This prevents vMenu from modifying voice chat even for admins with vMenu.Everything.
             if (IsAllowed(Permission.WPMenu))
             {
                 Tick += WeaponOptions;
@@ -1290,14 +1288,14 @@ namespace vMenuClient
                                         {
                                             if (playerKiller.Character.Handle == killer.Handle)
                                             {
-                                                Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~has been murdered by ~y~<C>{GetSafePlayerName(playerKiller.Name)}</C>~s~.");
+                                                Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~has been murdered by ~y~<C>{GetSafePlayerName(playerKiller.Name)}</C>~s~.");
                                                 found = true;
                                                 break;
                                             }
                                         }
                                         if (!found)
                                         {
-                                            Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~has been murdered.");
+                                            Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~has been murdered.");
                                         }
                                     }
                                     else if (killer.Model.IsVehicle)
@@ -1309,7 +1307,7 @@ namespace vMenuClient
                                             {
                                                 if (playerKiller.Character.CurrentVehicle.Handle == killer.Handle)
                                                 {
-                                                    Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~has been murdered by ~y~<C>{GetSafePlayerName(playerKiller.Name)}</C>~s~.");
+                                                    Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~has been murdered by ~y~<C>{GetSafePlayerName(playerKiller.Name)}</C>~s~.");
                                                     found = true;
                                                     break;
                                                 }
@@ -1317,27 +1315,27 @@ namespace vMenuClient
                                         }
                                         if (!found)
                                         {
-                                            Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~has been murdered.");
+                                            Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~has been murdered.");
                                         }
                                     }
                                     else
                                     {
-                                        Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~has been murdered.");
+                                        Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~has been murdered.");
                                     }
                                 }
                                 else
                                 {
-                                    Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~has been murdered.");
+                                    Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~has been murdered.");
                                 }
                             }
                             else
                             {
-                                Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~committed suicide.");
+                                Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~committed suicide.");
                             }
                         }
                         else
                         {
-                            Notify.Custom($"~o~<C>{GetSafePlayerName(p.Name)}</C> ~s~died.");
+                            Notify.Custom($"~o~<C>{menus.OnlinePlayers.GetDisplayName(p)}</C> ~s~died.");
                         }
                         deadPlayers.Add(p.Handle);
                     }

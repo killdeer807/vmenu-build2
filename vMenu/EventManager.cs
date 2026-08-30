@@ -42,7 +42,7 @@ namespace vMenuClient
             EventHandlers.Add("vMenu:SetConfigOptions", new Action(SetConfigOptions));
             EventHandlers.Add("vMenu:SetPermissions", new Action<string>(MainMenu.SetPermissions));
             EventHandlers.Add("vMenu:SetSupplementaryPermissions", new Action<string>(MainMenu.SetSupplementaryPermissions));
-            EventHandlers.Add("vMenu:KillMe", new Action<string>(KillMe));
+            EventHandlers.Add("vMenu:KillMe", new Action<string, string>(KillMe));
             EventHandlers.Add("vMenu:Notify", new Action<string>(NotifyPlayer));
             EventHandlers.Add("vMenu:SetClouds", new Action<float, string>(SetClouds));
             EventHandlers.Add("vMenu:GoodBye", new Action(GoodBye));
@@ -444,9 +444,15 @@ namespace vMenuClient
         /// <summary>
         /// Kill this player, poor thing, someone wants you dead... R.I.P.
         /// </summary>
-        private void KillMe(string sourceName)
+        private void KillMe(string sourceName, string sourceServerId)
         {
-            Notify.Alert($"You have been killed by <C>{GetSafePlayerName(sourceName)}</C>~s~ using the ~r~Kill Player~s~ option in vMenu.");
+            var killerName = GetSafePlayerName(sourceName);
+            if (int.TryParse(sourceServerId, out var serverId))
+            {
+                killerName = menus.OnlinePlayers.GetDisplayName(serverId, sourceName);
+            }
+
+            Notify.Alert($"You have been killed by <C>{killerName}</C>~s~ using the ~r~Kill Player~s~ option in vMenu.");
             SetEntityHealth(Game.PlayerPed.Handle, 0);
         }
 
